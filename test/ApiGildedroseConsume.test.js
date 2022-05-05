@@ -6,12 +6,11 @@ const { listApiGildedroseSchema } = require('../schema/ListApiGildedrose.schema'
 const { expect } = chai;
 
 const urlBase = 'http://localhost:8080/api';
-
+let idItemTest = 0;
 // SE DEBE CORRER PROYECTO
 // TENER AL MENOS UN OBJETO CREADO (POR AHORA)
 
 describe('Praxis Gildedrose API Test', () => {
-  const idItemTest = 1;
   describe('Testing POST Services', () => {
     it('Consume POST, creating item', async () => {
       const response = await agent.post(`${urlBase}/items`)
@@ -21,13 +20,17 @@ describe('Praxis Gildedrose API Test', () => {
           quality: 23,
           type: 'AGED'
         });
+
       expect(response.statusCode).to.equal(statusCode.CREATED);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
       expect(response.body).to.have.property('name').to.eql('Chicharrón');
       expect(response.body).to.have.property('sellIn').to.eql(12);
       expect(response.body).to.have.property('quality').to.eql(23);
       expect(response.body).to.have.property('type').to.eql('AGED');
+      // take the item id how a reference. 
+      idItemTest = response.body.id;
     });
+
     it('Consume POST, create batch items', async () => {
       const response = await agent.post(`${urlBase}/items/createItems`)
         .send([

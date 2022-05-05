@@ -1,6 +1,7 @@
 const agent = require('superagent');
 const statusCode = require('http-status-codes');
 const chai = require('chai');
+const { listApiGildedroseSchema } = require('../schema/ListApiGildedrose.schema');
 
 const { expect } = chai;
 
@@ -10,6 +11,7 @@ const urlBase = 'http://localhost:8080/api';
 // TENER AL MENOS UN OBJETO CREADO (POR AHORA)
 
 describe('Praxis Gildedrose API Test', () => {
+  const idItemTest = 1;
   describe('Testing POST Services', () => {
     it('Consume POST, creating item', async () => {
       const response = await agent.post(`${urlBase}/items`)
@@ -20,6 +22,7 @@ describe('Praxis Gildedrose API Test', () => {
           type: 'AGED'
         });
       expect(response.statusCode).to.equal(statusCode.CREATED);
+      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
       expect(response.body).to.have.property('name').to.eql('Chicharrón');
       expect(response.body).to.have.property('sellIn').to.eql(12);
       expect(response.body).to.have.property('quality').to.eql(23);
@@ -42,6 +45,8 @@ describe('Praxis Gildedrose API Test', () => {
           }
         ]);
       expect(response.statusCode).to.equal(statusCode.CREATED);
+      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[1]));
+      expect(response.body.length).to.equal(2);
       expect(response.body[0]).to.have.property('name').to.eql('Miel');
       expect(response.body[0]).to.have.property('sellIn').to.eql(20);
       expect(response.body[0]).to.have.property('quality').to.eql(35);
@@ -52,17 +57,27 @@ describe('Praxis Gildedrose API Test', () => {
       expect(response.body[1]).to.have.property('quality').to.eql(35);
       expect(response.body[1]).to.have.property('type').to.eql('NORMAL');
     });
-    // Tener presente en el segundo expect cambiar el id que coincida con el que vamos a crear
+
     it('Consume POST, update Quality', async () => {
-      const response = await agent.post(`${urlBase}/items/quality`)
-        .send({
-          name: 'barra de chocorramo',
-          sellIn: 5,
-          quality: 100
-        });
+      const response = await agent.post(`${urlBase}/items/quality`);
       expect(response.statusCode).to.equal(statusCode.OK);
-      // expect to return a list
-      // expect elements into list have a quality +1 and others conditions
+      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[2]));
+      expect(response.body.length).to.equal(3);
+
+      expect(response.body[0]).to.have.property('name').to.eql('Chicharrón');
+      expect(response.body[0]).to.have.property('sellIn').to.eql(11);
+      expect(response.body[0]).to.have.property('quality').to.eql(24);
+      expect(response.body[0]).to.have.property('type').to.eql('AGED');
+
+      expect(response.body[1]).to.have.property('name').to.eql('Miel');
+      expect(response.body[1]).to.have.property('sellIn').to.eql(19);
+      expect(response.body[1]).to.have.property('quality').to.eql(36);
+      expect(response.body[1]).to.have.property('type').to.eql('AGED');
+
+      expect(response.body[2]).to.have.property('name').to.eql('Miel2');
+      expect(response.body[2]).to.have.property('sellIn').to.eql(19);
+      expect(response.body[2]).to.have.property('quality').to.eql(34);
+      expect(response.body[2]).to.have.property('type').to.eql('NORMAL');
     });
   });
 
@@ -71,20 +86,23 @@ describe('Praxis Gildedrose API Test', () => {
       const response = await agent.get(`${urlBase}/items`);
 
       expect(response.statusCode).to.equal(statusCode.OK);
+      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[2]));
+
+      expect(response.body.length).to.equal(3);
     });
-    // Añadir un segundo expect con el que se compruebe (creería yo) que la respuesta es una lista
+
     it('Consume GET, GET item by id', async () => {
-      const response = await agent.get(`${urlBase}/items/1`);
+      const response = await agent.get(`${urlBase}/items/${idItemTest}`);
 
       expect(response.statusCode).to.equal(statusCode.OK);
-      expect(response.body).to.have.property('id').to.eql(1);
+      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
+      expect(response.body).to.have.property('id').to.eql(idItemTest);
     });
-    // Tener presente en el segundo expect cambiar el id que coincida con el que vamos a recibir
   });
 
   describe('Testing PUT Services', () => {
     it('Consume PUT service, update item by id', async () => {
-      const response = await agent.put(`${urlBase}/items/1`)
+      const response = await agent.put(`${urlBase}/items/${idItemTest}`)
         .send({
           name: 'item editado',
           sellIn: 5,
@@ -92,6 +110,7 @@ describe('Praxis Gildedrose API Test', () => {
           type: 'AGED'
         });
       expect(response.statusCode).to.equal(statusCode.CREATED);
+      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
       expect(response.body).to.have.property('name').to.eql('item editado');
       expect(response.body).to.have.property('sellIn').to.eql(5);
       expect(response.body).to.have.property('quality').to.eql(100);
@@ -101,11 +120,10 @@ describe('Praxis Gildedrose API Test', () => {
 
   describe('Testing DELETE Services', () => {
     it('Consume DELETE, delete item by id', async () => {
-      const response = await agent.delete(`${urlBase}/items/1`);
-
+      const response = await agent.delete(`${urlBase}/items/${idItemTest}`);
       expect(response.status).to.equal(statusCode.OK);
-      expect(response.body).to.have.property('id').to.eql(1);
+      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
+      expect(response.body).to.have.property('id').to.eql(idItemTest);
     });
-    // Tener presente en el segundo expect cambiar el id que coincida con el que vamos a eliminar
   });
 });

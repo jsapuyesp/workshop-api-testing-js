@@ -20,19 +20,19 @@ describe('Praxix Gildedrose API Test', () => {
     });
     // Añadir un segundo expect con el que se compruebe (creería yo) que la respuesta es una lista
     it('Consume GET, GET item by id', async () => {
-      const response = await agent.get(`${urlBase}/items/4`);
+      const response = await agent.get(`${urlBase}/items/5`);
 
       expect(response.statusCode).to.equal(statusCode.OK);
-      expect(response.body).to.have.property('id').to.eql(4);
+      expect(response.body).to.have.property('id').to.eql(5);
     });
     // Tener presente en el segundo expect cambiar el id que coincida con el que vamos a recibir
   });
   describe('Testing DELETE Services', () => {
     it('Consume DELETE, delete item by id', async () => {
-      const response = await agent.delete(`${urlBase}/items/4`);
+      const response = await agent.delete(`${urlBase}/items/5`);
 
       expect(response.status).to.equal(statusCode.OK);
-      expect(response.body).to.have.property('id').to.eql(4);
+      expect(response.body).to.have.property('id').to.eql(5);
     });
     // Tener presente en el segundo expect cambiar el id que coincida con el que vamos a eliminar
   });
@@ -40,16 +40,16 @@ describe('Praxix Gildedrose API Test', () => {
     it('Consume POST, creating item', async () => {
       const response = await agent.post(`${urlBase}/items`)
         .send({
-          name: 'Sopa',
+          name: 'Chicharrón',
           sellIn: 12,
           quality: 25,
           type: 'AGED'
         });
 
       expect(response.statusCode).to.equal(statusCode.CREATED);
+      expect(response.body).to.have.property('id').to.eql(6);
     });
-    // Sería poner un segundo expect
-    // (Viendo la respuesta en postman, sería verificar el return)
+    // Tener presente en el segundo expect cambiar el id que coincida con el que vamos a crear
   });
   describe('Testing PUT Services', () => {
 

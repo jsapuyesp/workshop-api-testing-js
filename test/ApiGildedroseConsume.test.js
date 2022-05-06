@@ -27,7 +27,7 @@ describe('Praxis Gildedrose API Test', () => {
       expect(response.body).to.have.property('sellIn').to.eql(12);
       expect(response.body).to.have.property('quality').to.eql(23);
       expect(response.body).to.have.property('type').to.eql('AGED');
-      // take the item id how a reference. 
+      // take the item id how a reference.
       idItemTest = response.body.id;
     });
 
@@ -65,22 +65,24 @@ describe('Praxis Gildedrose API Test', () => {
       const response = await agent.post(`${urlBase}/items/quality`);
       expect(response.statusCode).to.equal(statusCode.OK);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[2]));
-      expect(response.body.length).to.equal(3);
 
-      expect(response.body[0]).to.have.property('name').to.eql('Chicharrón');
-      expect(response.body[0]).to.have.property('sellIn').to.eql(11);
-      expect(response.body[0]).to.have.property('quality').to.eql(24);
-      expect(response.body[0]).to.have.property('type').to.eql('AGED');
+      const responseReversed = await response.body.reverse();
+      it('response reversed', console.log(response.body));
 
-      expect(response.body[1]).to.have.property('name').to.eql('Miel');
-      expect(response.body[1]).to.have.property('sellIn').to.eql(19);
-      expect(response.body[1]).to.have.property('quality').to.eql(36);
-      expect(response.body[1]).to.have.property('type').to.eql('AGED');
+      expect(responseReversed[0]).to.have.property('name').to.eql('Chicharrón');
+      expect(responseReversed[0]).to.have.property('sellIn').to.eql(11);
+      expect(responseReversed[0]).to.have.property('quality').to.eql(24);
+      expect(responseReversed[0]).to.have.property('type').to.eql('AGED');
 
-      expect(response.body[2]).to.have.property('name').to.eql('Miel2');
-      expect(response.body[2]).to.have.property('sellIn').to.eql(19);
-      expect(response.body[2]).to.have.property('quality').to.eql(34);
-      expect(response.body[2]).to.have.property('type').to.eql('NORMAL');
+      expect(responseReversed[1]).to.have.property('name').to.eql('Miel');
+      expect(responseReversed[1]).to.have.property('sellIn').to.eql(19);
+      expect(responseReversed[1]).to.have.property('quality').to.eql(36);
+      expect(responseReversed[1]).to.have.property('type').to.eql('AGED');
+
+      expect(responseReversed[2]).to.have.property('name').to.eql('Miel2');
+      expect(responseReversed[2]).to.have.property('sellIn').to.eql(19);
+      expect(responseReversed[2]).to.have.property('quality').to.eql(34);
+      expect(responseReversed[2]).to.have.property('type').to.eql('NORMAL');
     });
   });
 
@@ -91,6 +93,7 @@ describe('Praxis Gildedrose API Test', () => {
       expect(response.statusCode).to.equal(statusCode.OK);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[2]));
 
+      console.log(response.body);
       expect(response.body.length).to.equal(3);
     });
 
@@ -124,6 +127,8 @@ describe('Praxis Gildedrose API Test', () => {
   describe('Testing DELETE Services', () => {
     it('Consume DELETE, delete item by id', async () => {
       const response = await agent.delete(`${urlBase}/items/${idItemTest}`);
+      await agent.delete(`${urlBase}/items/${idItemTest + 1}`);
+      await agent.delete(`${urlBase}/items/${idItemTest + 2}`);
       expect(response.status).to.equal(statusCode.OK);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
       expect(response.body).to.have.property('id').to.eql(idItemTest);

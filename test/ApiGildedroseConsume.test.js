@@ -7,9 +7,16 @@ const { expect } = chai;
 
 const urlBase = 'http://localhost:8080/api';
 let idItemTest = 0;
-// SE DEBE CORRER PROYECTO
-// TENER AL MENOS UN OBJETO CREADO (POR AHORA)
-
+/*
+1) The project must first be run:
+  For this download front, back folders and the docker-compose file.
+  Your tree should look like this:
+         praxis-FE
+         praxis-gildedrose
+         docker-compose.yml
+  Execute: docker-compose up
+2) Does not work if there is an item in the database, delete all items before
+*/
 describe('Praxis Gildedrose API Test', () => {
   describe('Testing POST Services', () => {
     it('Consume POST, creating item', async () => {
@@ -66,23 +73,20 @@ describe('Praxis Gildedrose API Test', () => {
       expect(response.statusCode).to.equal(statusCode.OK);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[2]));
 
-      const responseReversed = await response.body.reverse();
-      it('response reversed', console.log(response.body));
+      expect(response.body[0]).to.have.property('name').to.eql('Chicharrón');
+      expect(response.body[0]).to.have.property('sellIn').to.eql(11);
+      expect(response.body[0]).to.have.property('quality').to.eql(24);
+      expect(response.body[0]).to.have.property('type').to.eql('AGED');
 
-      expect(responseReversed[0]).to.have.property('name').to.eql('Chicharrón');
-      expect(responseReversed[0]).to.have.property('sellIn').to.eql(11);
-      expect(responseReversed[0]).to.have.property('quality').to.eql(24);
-      expect(responseReversed[0]).to.have.property('type').to.eql('AGED');
+      expect(response.body[1]).to.have.property('name').to.eql('Miel');
+      expect(response.body[1]).to.have.property('sellIn').to.eql(19);
+      expect(response.body[1]).to.have.property('quality').to.eql(36);
+      expect(response.body[1]).to.have.property('type').to.eql('AGED');
 
-      expect(responseReversed[1]).to.have.property('name').to.eql('Miel');
-      expect(responseReversed[1]).to.have.property('sellIn').to.eql(19);
-      expect(responseReversed[1]).to.have.property('quality').to.eql(36);
-      expect(responseReversed[1]).to.have.property('type').to.eql('AGED');
-
-      expect(responseReversed[2]).to.have.property('name').to.eql('Miel2');
-      expect(responseReversed[2]).to.have.property('sellIn').to.eql(19);
-      expect(responseReversed[2]).to.have.property('quality').to.eql(34);
-      expect(responseReversed[2]).to.have.property('type').to.eql('NORMAL');
+      expect(response.body[2]).to.have.property('name').to.eql('Miel2');
+      expect(response.body[2]).to.have.property('sellIn').to.eql(19);
+      expect(response.body[2]).to.have.property('quality').to.eql(34);
+      expect(response.body[2]).to.have.property('type').to.eql('NORMAL');
     });
   });
 
@@ -92,8 +96,6 @@ describe('Praxis Gildedrose API Test', () => {
 
       expect(response.statusCode).to.equal(statusCode.OK);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[2]));
-
-      console.log(response.body);
       expect(response.body.length).to.equal(3);
     });
 

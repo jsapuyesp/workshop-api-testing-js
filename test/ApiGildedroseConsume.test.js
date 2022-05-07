@@ -6,7 +6,6 @@ const { listApiGildedroseSchema } = require('../schema/ListApiGildedrose.schema'
 const { expect } = chai;
 
 const urlBase = 'http://localhost:8080/api';
-let idItemTest = 0;
 /*
 1) The project must first be run:
   For this download front, back folders and the docker-compose file.
@@ -17,7 +16,17 @@ let idItemTest = 0;
   Execute: docker-compose up
 2) Does not work if there is an item in the database, delete all items before
 */
+const itemsBefore = [];
+let idItemTest = 0;
+
 describe('Praxis Gildedrose API Test', () => {
+  before('', async () => {
+    const { body } = await agent.get(`${urlBase}/items`);
+    body.forEach(async (item) => {
+      const element = await agent.delete(`${urlBase}/items/${item.id}`);
+      itemsBefore.push(element.body);
+    });
+  });
   describe('Testing POST Services', () => {
     it('Consume POST, creating item', async () => {
       const response = await agent.post(`${urlBase}/items`)
@@ -34,7 +43,7 @@ describe('Praxis Gildedrose API Test', () => {
       expect(response.body).to.have.property('sellIn').to.eql(12);
       expect(response.body).to.have.property('quality').to.eql(23);
       expect(response.body).to.have.property('type').to.eql('AGED');
-      // take the item id how a reference.
+      //  take the item id as a reference.
       idItemTest = response.body.id;
     });
 
@@ -56,7 +65,7 @@ describe('Praxis Gildedrose API Test', () => {
         ]);
       expect(response.statusCode).to.equal(statusCode.CREATED);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[1]));
-      expect(response.body.length).to.equal(2);
+
       expect(response.body[0]).to.have.property('name').to.eql('Miel');
       expect(response.body[0]).to.have.property('sellIn').to.eql(20);
       expect(response.body[0]).to.have.property('quality').to.eql(35);
@@ -93,10 +102,8 @@ describe('Praxis Gildedrose API Test', () => {
   describe('Testing GET Services', () => {
     it('Consume GET, GET items', async () => {
       const response = await agent.get(`${urlBase}/items`);
-
       expect(response.statusCode).to.equal(statusCode.OK);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[2]));
-      expect(response.body.length).to.equal(3);
     });
 
     it('Consume GET, GET item by id', async () => {
@@ -135,5 +142,13 @@ describe('Praxis Gildedrose API Test', () => {
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
       expect(response.body).to.have.property('id').to.eql(idItemTest);
     });
+  });
+
+  after('restore items', async () => {
+    itemsBefore.forEach(async (item) => {
+      await agent.post(`${urlBase}/items`).send(item);
+    });
+    const response = await agent.get(`${urlBase}/items`);
+    await Promise.all(response.body);
   });
 });

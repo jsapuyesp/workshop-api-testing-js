@@ -8,13 +8,12 @@ const { expect } = chai;
 const urlBase = 'http://localhost:8080/api';
 /*
 1) The project must first be run:
-  For this download front, back folders and the docker-compose file.
+  For this, download the front and back folders and the docker-compose file.
   Your tree should look like this:
          praxis-FE
          praxis-gildedrose
          docker-compose.yml
   Execute: docker-compose up
-2) Does not work if there is an item in the database, delete all items before
 */
 const itemsBefore = [];
 let idItemTest = 0;
@@ -28,6 +27,15 @@ describe('Praxis Gildedrose API Test', () => {
     });
   });
   describe('Testing POST Services', () => {
+
+    /*
+    it('Consume POST, creating an incomplete item', async () => {
+
+      Code expect for create and update an incomplete item here
+      
+    });
+    */
+
     it('Consume POST, creating item', async () => {
       const response = await agent.post(`${urlBase}/items`)
         .send({

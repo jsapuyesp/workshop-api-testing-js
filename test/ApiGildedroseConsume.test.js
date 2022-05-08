@@ -27,15 +27,6 @@ describe('Praxis Gildedrose API Test', () => {
     });
   });
   describe('Testing POST Services', () => {
-
-    /*
-    it('Consume POST, creating an incomplete item', async () => {
-
-      Code expect for create and update an incomplete item here
-      
-    });
-    */
-
     it('Consume POST, creating item', async () => {
       const response = await agent.post(`${urlBase}/items`)
         .send({
@@ -105,6 +96,20 @@ describe('Praxis Gildedrose API Test', () => {
       expect(response.body[2]).to.have.property('quality').to.eql(34);
       expect(response.body[2]).to.have.property('type').to.eql('NORMAL');
     });
+
+    it('Consume POST, creating an incomplete item', async () => {
+      // Code expect for create and update an incomplete item here
+      const response = await agent.post(`${urlBase}/items`)
+        .send({
+        });
+
+      expect(response.statusCode).to.equal(statusCode.CREATED);
+      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[3]));
+      expect(response.body).to.have.property('name').to.eql(null);
+      expect(response.body).to.have.property('sellIn').to.eql(0);
+      expect(response.body).to.have.property('quality').to.eql(0);
+      expect(response.body).to.have.property('type').to.eql(null);
+    });
   });
 
   describe('Testing GET Services', () => {
@@ -146,6 +151,7 @@ describe('Praxis Gildedrose API Test', () => {
       const response = await agent.delete(`${urlBase}/items/${idItemTest}`);
       await agent.delete(`${urlBase}/items/${idItemTest + 1}`);
       await agent.delete(`${urlBase}/items/${idItemTest + 2}`);
+      await agent.delete(`${urlBase}/items/${idItemTest + 3}`);
       expect(response.status).to.equal(statusCode.OK);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
       expect(response.body).to.have.property('id').to.eql(idItemTest);

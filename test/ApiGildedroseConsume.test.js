@@ -5,19 +5,13 @@ const { listApiGildedroseSchema } = require('../schema/ListApiGildedrose.schema'
 
 const { expect } = chai;
 
-const urlBase = 'http://localhost:8080/api';
-/*
-1) The project must first be run:
-  For this, download the front and back folders and the docker-compose file.
-  Your tree should look like this:
-         praxis-FE
-         praxis-gildedrose
-         docker-compose.yml
-  Execute: docker-compose up
-*/
+const urlBase = 'http://44.205.30.180:8090/api';
 const itemsBefore = [];
 let idItemTest = 0;
+/*
+1) The project must first be run:
 
+*/
 describe('Praxis Gildedrose API Test', () => {
   before('', async () => {
     const { body } = await agent.get(`${urlBase}/items`);
@@ -97,19 +91,20 @@ describe('Praxis Gildedrose API Test', () => {
       expect(response.body[2]).to.have.property('type').to.eql('NORMAL');
     });
 
-    it('Consume POST, creating an incomplete item', async () => {
-      // Code expect for create and update an incomplete item here
-      const response = await agent.post(`${urlBase}/items`)
-        .send({
-        });
+    // it('Consume POST, creating an incomplete item', async () => {
+    //   // Code expect for create and update an incomplete item here
+    //   const response = await agent.post(`${urlBase}/items`)
+    //     .send({
+    //     });
 
-      expect(response.statusCode).to.equal(statusCode.CREATED);
-      it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[3]));
-      expect(response.body).to.have.property('name').to.eql(null);
-      expect(response.body).to.have.property('sellIn').to.eql(0);
-      expect(response.body).to.have.property('quality').to.eql(0);
-      expect(response.body).to.have.property('type').to.eql(null);
-    });
+    //   expect(response.statusCode).to.equal(statusCode.CREATED);
+    //   it('then the body should have a schema', () => expect(response.body)
+    //   .to.be.jsonSchema(listApiGildedroseSchema[3]));
+    //   expect(response.body).to.have.property('name').to.eql(null);
+    //   expect(response.body).to.have.property('sellIn').to.eql(0);
+    //   expect(response.body).to.have.property('quality').to.eql(0);
+    //   expect(response.body).to.have.property('type').to.eql(null);
+    // });
   });
 
   describe('Testing GET Services', () => {
@@ -151,7 +146,7 @@ describe('Praxis Gildedrose API Test', () => {
       const response = await agent.delete(`${urlBase}/items/${idItemTest}`);
       await agent.delete(`${urlBase}/items/${idItemTest + 1}`);
       await agent.delete(`${urlBase}/items/${idItemTest + 2}`);
-      await agent.delete(`${urlBase}/items/${idItemTest + 3}`);
+      // await agent.delete(`${urlBase}/items/${idItemTest + 3}`);
       expect(response.status).to.equal(statusCode.OK);
       it('then the body should have a schema', () => expect(response.body).to.be.jsonSchema(listApiGildedroseSchema[0]));
       expect(response.body).to.have.property('id').to.eql(idItemTest);

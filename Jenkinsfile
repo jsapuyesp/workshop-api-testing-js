@@ -19,4 +19,15 @@ node{
         }
         echo 'sign out cathError'
     }
+    
+    stage('Show interface'){
+        publishHTML (
+            target : [allowMissing: false,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'report',
+            reportFiles: 'ApiTesting.html',
+            reportName: 'My Reports',
+            reportTitles: 'The Report'])
+    }
 }

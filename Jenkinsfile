@@ -20,7 +20,7 @@ node{
         echo 'sign out cathError'
     }
     
-    stage('Show interface'){
+    stage('Generate report'){
         publishHTML (
             target : [allowMissing: false,
             alwaysLinkToLastBuild: true,

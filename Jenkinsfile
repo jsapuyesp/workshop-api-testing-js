@@ -25,7 +25,7 @@ node{
             target : [allowMissing: false,
             alwaysLinkToLastBuild: true,
             keepAll: true,
-            reportDir: 'report',
+            reportDir: './report',
             reportFiles: 'ApiTesting.html',
             reportName: 'My Reports',
             reportTitles: 'The Report'])

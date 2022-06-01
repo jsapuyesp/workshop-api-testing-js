@@ -25,9 +25,9 @@ node{
             target : [allowMissing: false,
             alwaysLinkToLastBuild: true,
             keepAll: true,
-            reportDir: '/var/lib/jenkins/jobs/API-test/builds/9/htmlreports/My_20Reports',
+            reportDir: 'report',
             reportFiles: 'ApiTesting.html',
-            reportName: 'My Reports',
+            reportName: 'API test report',
             reportTitles: 'The Report'])
     }
 }

@@ -13,6 +13,10 @@ node{
     }
 
     stage('API Test'){
-        sh 'npm test'
+        catchError {
+            echo 'into cathError'
+            sh 'npm test'
+        }
+        echo 'sign out cathError'
     }
 }

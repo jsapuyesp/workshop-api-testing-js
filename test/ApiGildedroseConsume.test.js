@@ -90,21 +90,6 @@ describe('Praxis Gildedrose API Test', () => {
       expect(response.body[2]).to.have.property('quality').to.eql(34);
       expect(response.body[2]).to.have.property('type').to.eql('NORMAL');
     });
-
-    // it('Consume POST, creating an incomplete item', async () => {
-    //   // Code expect for create and update an incomplete item here
-    //   const response = await agent.post(`${urlBase}/items`)
-    //     .send({
-    //     });
-
-    //   expect(response.statusCode).to.equal(statusCode.CREATED);
-    //   it('then the body should have a schema', () => expect(response.body)
-    //   .to.be.jsonSchema(listApiGildedroseSchema[3]));
-    //   expect(response.body).to.have.property('name').to.eql(null);
-    //   expect(response.body).to.have.property('sellIn').to.eql(0);
-    //   expect(response.body).to.have.property('quality').to.eql(0);
-    //   expect(response.body).to.have.property('type').to.eql(null);
-    // });
   });
 
   describe('Testing GET Services', () => {
@@ -162,25 +147,25 @@ describe('Praxis Gildedrose API Test', () => {
   });
 });
 
-// describe('Failed praxis Gildedrose API Test', () => {
-//   before('', async () => {
-//     const { body } = await agent.get(`${urlBase}/items`);
-//     body.forEach(async (item) => {
-//       const element = await agent.delete(`${urlBase}/items/${item.id}`);
-//       itemsBefore.push(element.body);
-//     });
-//   });
-//   describe('Testing Failed', () => {
-//     it('Consume GET, GET items', async () => {
-//       const response = await agent.get(`${urlBase}/items`);
-//       expect(response.statusCode).to.equal(statusCode.CREATED);
-//     });
-//   });
-//   after('restore items', async () => {
-//     itemsBefore.forEach(async (item) => {
-//       await agent.post(`${urlBase}/items`).send(item);
-//     });
-//     const response = await agent.get(`${urlBase}/items`);
-//     await Promise.all(response.body);
-//   });
-// });
+describe('Failed praxis Gildedrose API Test', () => {
+  before('', async () => {
+    const { body } = await agent.get(`${urlBase}/items`);
+    body.forEach(async (item) => {
+      const element = await agent.delete(`${urlBase}/items/${item.id}`);
+      itemsBefore.push(element.body);
+    });
+  });
+  describe('Testing Failed', () => {
+    it('Consume GET, GET items', async () => {
+      const response = await agent.get(`${urlBase}/items`);
+      expect(response.statusCode).to.equal(statusCode.CREATED);
+    });
+  });
+  after('restore items', async () => {
+    itemsBefore.forEach(async (item) => {
+      await agent.post(`${urlBase}/items`).send(item);
+    });
+    const response = await agent.get(`${urlBase}/items`);
+    await Promise.all(response.body);
+  });
+});

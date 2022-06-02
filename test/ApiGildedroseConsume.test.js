@@ -162,7 +162,7 @@ describe('Praxis Gildedrose API Test', () => {
   });
 });
 
-// describe('Falling praxis Gildedrose API Test', () => {
+// describe('Failed praxis Gildedrose API Test', () => {
 //   before('', async () => {
 //     const { body } = await agent.get(`${urlBase}/items`);
 //     body.forEach(async (item) => {
@@ -170,7 +170,7 @@ describe('Praxis Gildedrose API Test', () => {
 //       itemsBefore.push(element.body);
 //     });
 //   });
-//   describe('Testing failling', () => {
+//   describe('Testing Failed', () => {
 //     it('Consume GET, GET items', async () => {
 //       const response = await agent.get(`${urlBase}/items`);
 //       expect(response.statusCode).to.equal(statusCode.CREATED);

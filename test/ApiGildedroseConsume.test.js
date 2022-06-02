@@ -162,25 +162,25 @@ describe('Praxis Gildedrose API Test', () => {
   });
 });
 
-describe('Praxis Gildedrose API Test', () => {
-  before('', async () => {
-    const { body } = await agent.get(`${urlBase}/items`);
-    body.forEach(async (item) => {
-      const element = await agent.delete(`${urlBase}/items/${item.id}`);
-      itemsBefore.push(element.body);
-    });
-  });
-  describe('Testing failling', () => {
-    it('Consume GET, GET items', async () => {
-      const response = await agent.get(`${urlBase}/items`);
-      expect(response.statusCode).to.equal(statusCode.CREATED);
-    });
-  });
-  after('restore items', async () => {
-    itemsBefore.forEach(async (item) => {
-      await agent.post(`${urlBase}/items`).send(item);
-    });
-    const response = await agent.get(`${urlBase}/items`);
-    await Promise.all(response.body);
-  });
-});
+// describe('Falling praxis Gildedrose API Test', () => {
+//   before('', async () => {
+//     const { body } = await agent.get(`${urlBase}/items`);
+//     body.forEach(async (item) => {
+//       const element = await agent.delete(`${urlBase}/items/${item.id}`);
+//       itemsBefore.push(element.body);
+//     });
+//   });
+//   describe('Testing failling', () => {
+//     it('Consume GET, GET items', async () => {
+//       const response = await agent.get(`${urlBase}/items`);
+//       expect(response.statusCode).to.equal(statusCode.CREATED);
+//     });
+//   });
+//   after('restore items', async () => {
+//     itemsBefore.forEach(async (item) => {
+//       await agent.post(`${urlBase}/items`).send(item);
+//     });
+//     const response = await agent.get(`${urlBase}/items`);
+//     await Promise.all(response.body);
+//   });
+// });
